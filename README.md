@@ -19,7 +19,7 @@ Copy this repository folder into the game's `mods` folder. Enable **Fast Monkey 
 
 ## Verification
 
-The implementation was checked against installed DST scripts build **756039**. See [Implementation notes](docs/IMPLEMENTATION.md) and [test plan](docs/TESTING.md). In-game multiplayer testing remains to be completed before publishing to the Steam Workshop.
+The implementation was checked against installed DST scripts build **756039**. See [Implementation notes](docs/IMPLEMENTATION.md), [test plan](docs/TESTING.md), and [publishing checklist](docs/PUBLISHING.md). In-game multiplayer testing remains to be completed before publishing to the Steam Workshop.
 
 ## License
 

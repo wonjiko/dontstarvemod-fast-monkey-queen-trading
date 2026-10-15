@@ -19,7 +19,7 @@
 
 ## 검증
 
-설치된 DST 스크립트 빌드 **756039**와 구현을 대조했습니다. [구현 설명](docs/IMPLEMENTATION.md)과 [게임 내 시험 항목](docs/TESTING.md)을 참고하세요. Steam 창작마당 공개 전 실제 멀티플레이 시험은 아직 필요합니다.
+설치된 DST 스크립트 빌드 **756039**와 구현을 대조했습니다. [구현 설명](docs/IMPLEMENTATION.md), [게임 내 시험 항목](docs/TESTING.md), [공개 전 확인 사항](docs/PUBLISHING.md)을 참고하세요. Steam 창작마당 공개 전 실제 멀티플레이 시험은 아직 필요합니다.
 
 ## 라이선스
 
