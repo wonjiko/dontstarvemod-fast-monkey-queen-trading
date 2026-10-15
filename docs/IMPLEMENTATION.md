@@ -11,11 +11,13 @@ Reviewed against the locally installed Don't Starve Together `data/databundles/s
 
 ## Change
 
-`modmain.lua` uses `AddStategraphPostInit("monkeyqueen", ...)` to remove the `busy` tag from `happy`, `removecurse_success`, and `removecurse_fail`. It does not touch `getitem`, `removecurse`, or `removecurse_channel`. Thus another Banana cannot enter while its predecessor's reward or curse logic is still pending. The original event handlers, animation calls, item removal, loot selection, and timers remain in place. The state graph runs with the same patch on server and clients because `all_clients_require_mod = true`.
+`modmain.lua` uses `AddStategraphPostInit("monkeyqueen", ...)` to run the `getitem` and `removecurse` animations at 8× speed. Their original `animover` handlers still determine when rewards and curse changes occur; the animation multiplier returns to normal on state exit. The patch also removes the `busy` tag from `happy`, `removecurse_success`, and `removecurse_fail`. Thus another Banana cannot enter while its predecessor's reward or curse logic is still pending. The original event handlers, item removal, loot selection, and timers remain in place. The state graph runs with the same patch on server and clients because `all_clients_require_mod = true`.
+
+The curse-token prop retains its original update and proximity check. A server-side prefab postinit adds movement toward the Queen only while she is channeling. The original prop still sends `stopcursechanneling` when it reaches her; the mod does not send that event itself.
 
 ## Compatibility boundary
 
-This patch depends on those three vanilla state names and on the ordering described above. If a future game update moves rewards or curse changes into a result state, reassess the patch before publishing an update. `tools/verify_upstream.py` checks these assumptions against a local game archive; it does not replace in-game testing.
+This patch depends on the five vanilla state names, their animation completion events, the curse prop's proximity event, and the ordering described above. If a future game update moves rewards or curse changes into a result state, reassess the patch before publishing an update. `tools/verify_upstream.py` checks these assumptions against a local game archive; it does not replace in-game testing.
 
 ## Blueprint erasing at the Cartographer's Desk
 

@@ -34,6 +34,7 @@ def main(archive_path):
         blueprint = archive.read("scripts/prefabs/blueprint.lua").decode("utf-8")
         desk = archive.read("scripts/prefabs/cartography_prototyper.lua").decode("utf-8")
         erasable = archive.read("scripts/components/erasablepaper.lua").decode("utf-8")
+        curse_prop = archive.read("scripts/prefabs/cursed_monkey_token.lua").decode("utf-8")
 
     require('inst.sg:HasStateTag("busy")' in queen, "Queen no longer gates trading on busy")
     require('inst.sg:GoToState("getitem"' in queen, "Queen no longer enters getitem")
@@ -43,6 +44,7 @@ def main(archive_path):
     getitem = state_block(sg, "getitem")
     require('tags = {"busy"}' in getitem, "getitem must remain busy")
     require('PlayAnimation("receive_item")' in getitem, "Receive animation changed")
+    require('EventHandler("animover"' in getitem, "Receive completion event changed")
     require('FlingItem(loot)' in getitem, "Blueprint reward flow changed")
     require('GoToState("happy"' in getitem, "Blueprint completion boundary changed")
 
@@ -50,10 +52,15 @@ def main(archive_path):
     channel = state_block(sg, "removecurse_channel")
     require('tags = {"busy"}' in remove, "Curse removal must remain busy")
     require('RemoveCurse("MONKEY", 4)' in remove, "Curse removal amount changed")
+    require('EventHandler("animover"' in remove, "Curse preparation completion event changed")
     require('"right_of_passage"' in remove, "Right-of-passage timer changed")
     require('GoToState("removecurse_channel")' in remove, "Curse channel boundary changed")
     require('tags = {"busy","channel"}' in channel, "Curse channel must remain busy")
     require('EventHandler("stopcursechanneling"' in sg, "Curse channel completion changed")
+    require('inst.target:PushEvent("stopcursechanneling",{success=true})' in curse_prop,
+            "Curse prop arrival event changed")
+    require('inst.components.updatelooper:AddOnUpdateFn(OnUpdateProp)' in curse_prop,
+            "Curse prop movement hook changed")
 
     for name in ("happy", "removecurse_success", "removecurse_fail"):
         block = state_block(sg, name)
@@ -76,7 +83,7 @@ def main(archive_path):
     require('self.erased_prefab = "papyrus"' in erasable and 'self.inst:Remove()' in erasable,
             "Blueprint consumption or Papyrus result changed")
 
-    print("PASS: Queen trade boundaries and Blueprint-to-Papyrus action match the mod's assumptions")
+    print("PASS: Queen animation, curse flow, trade boundaries, and Blueprint action match the mod's assumptions")
 
 
 if __name__ == "__main__":

@@ -4,9 +4,9 @@ Run these checks on the current game build before Steam Workshop publication. Re
 
 | Case | Expected result |
 | --- | --- |
-| No curse: give two separate Bananas rapidly | One Banana consumed per accepted trade; one blueprint drops per trade; the next trade can begin during `happy`. |
+| No curse: give two separate Bananas rapidly | The Queen's receive animation completes quickly; one Banana is consumed per accepted trade; one blueprint drops per trade; the next trade can begin during `happy`. |
 | No curse: give two from a stack | Stack decreases by two; two blueprint drops. |
-| Cursed player: give Bananas rapidly | The next trade is blocked during receive and curse channel; up to four curse stacks removed per completed trade. |
+| Cursed player: give Bananas rapidly | Receive and curse-preparation animations complete quickly, and the curse prop returns faster; the next trade is blocked until the original channel completion event; up to four curse stacks are removed per completed trade. |
 | Curse result animation | The next trade can begin immediately in success/fail; result animation remains visible if no new trade interrupts it. |
 | Right of passage | Existing timer still starts or resets at the original duration. |
 | Multiplayer: dedicated server, two clients | Both clients see the same Queen animation and rewards; no duplicate items or desync. |
