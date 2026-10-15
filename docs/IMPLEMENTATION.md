@@ -16,3 +16,9 @@ Reviewed against the locally installed Don't Starve Together `data/databundles/s
 ## Compatibility boundary
 
 This patch depends on those three vanilla state names and on the ordering described above. If a future game update moves rewards or curse changes into a result state, reassess the patch before publishing an update. `tools/verify_upstream.py` checks these assumptions against a local game archive; it does not replace in-game testing.
+
+## Blueprint erasing at the Cartographer's Desk
+
+In build 756039, `scripts/prefabs/blueprint.lua` marks every standard and specific Blueprint with `scrapbook_proxy = "blueprint"`. The Cartographer's Desk prefab is `cartographydesk` and has the `papereraser` component. `ACTIONS.ERASE_PAPER` calls that component, which delegates to `ErasablePaper:DoErase`. The component spawns Papyrus, consumes one Blueprint, and gives or drops the Papyrus.
+
+The vanilla `ERASE_PAPER` handler sends both `wilson` and `wilson_client` to `dolongaction` (one-second server timeout). This mod adds a handler on both state graphs that chooses `doshortaction` only when the item is a Blueprint and the target is a Cartographer's Desk. The existing short action performs the buffered action after six frames. All other `ERASE_PAPER` uses keep `dolongaction`. The action and component themselves are unchanged, so conversion results and stack handling stay under vanilla control.

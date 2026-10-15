@@ -9,3 +9,20 @@ AddStategraphPostInit("monkeyqueen", function(sg)
         end
     end
 end)
+
+-- Erasing a blueprint at the Cartographer's Desk uses the generic one-second
+-- long action in vanilla. Select the existing short action on both the server
+-- and the predicting client; the original ERASE_PAPER action still consumes the
+-- blueprint and grants Papyrus. Other erasable paper keeps its vanilla timing.
+local function BlueprintEraseState(inst, action)
+    local item = action ~= nil and action.invobject or nil
+    local target = action ~= nil and action.target or nil
+    if item ~= nil and item.scrapbook_proxy == "blueprint"
+        and target ~= nil and target.prefab == "cartographydesk" then
+        return "doshortaction"
+    end
+    return "dolongaction"
+end
+
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.ERASE_PAPER, BlueprintEraseState))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.ERASE_PAPER, BlueprintEraseState))

@@ -28,6 +28,12 @@ def main(archive_path):
         queen = archive.read("scripts/prefabs/monkeyqueen.lua").decode("utf-8")
         sg = archive.read("scripts/stategraphs/SGmonkeyqueen.lua").decode("utf-8")
         trader = archive.read("scripts/components/trader.lua").decode("utf-8")
+        actions = archive.read("scripts/actions.lua").decode("utf-8")
+        wilson = archive.read("scripts/stategraphs/SGwilson.lua").decode("utf-8")
+        wilson_client = archive.read("scripts/stategraphs/SGwilson_client.lua").decode("utf-8")
+        blueprint = archive.read("scripts/prefabs/blueprint.lua").decode("utf-8")
+        desk = archive.read("scripts/prefabs/cartography_prototyper.lua").decode("utf-8")
+        erasable = archive.read("scripts/components/erasablepaper.lua").decode("utf-8")
 
     require('inst.sg:HasStateTag("busy")' in queen, "Queen no longer gates trading on busy")
     require('inst.sg:GoToState("getitem"' in queen, "Queen no longer enters getitem")
@@ -54,7 +60,23 @@ def main(archive_path):
         require('tags = {"busy"}' in block, f"Expected busy reaction state: {name}")
         require('PlayAnimation(' in block, f"Expected vanilla animation: {name}")
 
-    print("PASS: vanilla trade and curse processing still finish before patched reaction states")
+    require('ActionHandler(ACTIONS.ERASE_PAPER, "dolongaction")' in wilson,
+            "Server paper erasing no longer uses dolongaction")
+    require('ActionHandler(ACTIONS.ERASE_PAPER, "dolongaction")' in wilson_client,
+            "Client paper erasing no longer uses dolongaction")
+    short_action = state_block(wilson, "doshortaction")
+    require('TimeEvent(6 * FRAMES' in short_action and 'PerformBufferedAction()' in short_action,
+            "Server short action timing changed")
+    require('inst.scrapbook_proxy = "blueprint"' in blueprint,
+            "Blueprint identification changed")
+    require('Prefab("cartographydesk"' in desk and 'inst:AddComponent("papereraser")' in desk,
+            "Cartographer's Desk eraser changed")
+    require('ACTIONS.ERASE_PAPER.fn' in actions and 'papereraser:DoErase' in actions,
+            "ERASE_PAPER action no longer delegates to papereraser")
+    require('self.erased_prefab = "papyrus"' in erasable and 'self.inst:Remove()' in erasable,
+            "Blueprint consumption or Papyrus result changed")
+
+    print("PASS: Queen trade boundaries and Blueprint-to-Papyrus action match the mod's assumptions")
 
 
 if __name__ == "__main__":

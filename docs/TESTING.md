@@ -12,5 +12,10 @@ Run these checks on the current game build before Steam Workshop publication. Re
 | Multiplayer: dedicated server, two clients | Both clients see the same Queen animation and rewards; no duplicate items or desync. |
 | Multiplayer: host and joining client | Both can trade in succession; rewards and item counts agree on both sides. |
 | Other NPCs | Their trading behavior is unchanged. |
+| Blueprint at Cartographer's Desk | One Blueprint disappears and the normal Papyrus output arrives after the short pickup animation. |
+| Several Blueprints in succession | Every accepted action consumes exactly one Blueprint and gives the matching Papyrus; no duplicate items. |
+| Other erasable paper at the desk | Original long action remains. |
+| Blueprint with burning or burnt desk | Game still refuses the action. |
+| Multiplayer: Blueprint erasing | Dedicated server and both clients agree on item counts and animation; no prediction rollback or desync. |
 
 These are manual checks, not claims of completed gameplay testing.
