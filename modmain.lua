@@ -24,5 +24,7 @@ local function BlueprintEraseState(inst, action)
     return "dolongaction"
 end
 
-AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.ERASE_PAPER, BlueprintEraseState))
-AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.ERASE_PAPER, BlueprintEraseState))
+local erase_paper = GLOBAL.ACTIONS.ERASE_PAPER
+local ActionHandler = GLOBAL.ActionHandler
+AddStategraphActionHandler("wilson", ActionHandler(erase_paper, BlueprintEraseState))
+AddStategraphActionHandler("wilson_client", ActionHandler(erase_paper, BlueprintEraseState))
